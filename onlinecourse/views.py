@@ -109,7 +109,7 @@ def submit(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     user = request.user
     enrollment = Enrollment.objects.get(user=user, course=course)
-    submission = Submission.objects.create(Enrollment=enrollment)
+    submission = Submission.objects.create(enrollment=enrollment)
     choices = extract_answers(request)
     submission.choices.set(choices)
     submission_id = submission.id
@@ -130,7 +130,7 @@ def extract_answers(request):
 def show_exam_result(request, course_id, submission_id):
     course = get_object_or_404(Course, pk=course_id)
     submission = Submission.objects.get(id=submission_id)
-    choices = Submission.choices.all()
+    choices = submission.choices.all()
     questions = course.question_set.all()
 
     total_score = 0
